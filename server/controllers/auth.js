@@ -1,3 +1,4 @@
+const UserApi = require('../db/api/users');
 // Обьект авторизованного пользователя:
 // {
 //     firstName: String,
@@ -17,25 +18,11 @@
 //     refreshTokenExpiredAt: Date (ms)
 // }
 
-module.exports.registradtion = function (req, res) {
+module.exports.registration = async function (req, res) {
     // POST-запрос на /api/registration - создание нового пользователя (регистрация). Сигнатура запроса: { username, surName, firstName, middleName, password }. Необходимо вернуть объект авторизовавшегося пользователя.
-    res.json({
-        firstName: String,
-        id: 'Primary key',
-        image: String,
-        middleName: String,
-        permission: {
-            chat: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
-            news: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
-            settings: { C: Boolean, R: Boolean, U: Boolean, D: Boolean }
-        },
-        surName: String,
-        username: String,
-        accessToken: String,
-        refreshToken: String,
-        accessTokenExpiredAt: Date(ms),
-        refreshTokenExpiredAt: Date(ms)
-    });
+    console.log(req.body);
+    const result = await UserApi.add(req.body);
+    res.json(result);
 }
 module.exports.login = function (req, res) {
     // POST-запрос на /api/login - авторизация после пользователького ввода. Cигнатура запроса: { username, password } Необходимо вернуть объект авторизовавшегося пользователя.

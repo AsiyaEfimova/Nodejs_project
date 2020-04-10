@@ -22,7 +22,7 @@ router.delete('/api/users/:id', ctrlUsers.delete)
 router.get('/api/profile', ctrlProfile.get)
 router.patch('/api/profile', ctrlProfile.patch)
 
-router.post('/api/registration', ctrlAuth.registradtion)
+router.post('/api/registration', ctrlAuth.registration)
 router.post('/api/login', ctrlAuth.login)
 router.post('/api/refresh-token', ctrlAuth.refreshtoken)
 

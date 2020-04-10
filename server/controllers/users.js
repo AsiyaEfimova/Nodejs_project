@@ -1,35 +1,5 @@
-// Обьект пользователя:
-// {
-//     firstName: String,
-//     id: Primary key,
-//     image: String,
-//     middleName: String,
-//     permission: {
-//         chat: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
-//         news: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
-//         settings: { C: Boolean, R: Boolean, U: Boolean, D: Boolean }
-//     }
-//     surName: String,
-//     username: String
-// }
-// Обьект авторизованного пользователя:
-// {
-//     firstName: String,
-//     id: Primary key,
-//     image: String,
-//     middleName: String,
-//     permission: {
-//         chat: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
-//         news: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
-//         settings: { C: Boolean, R: Boolean, U: Boolean, D: Boolean }
-//     }
-//     surName: String,
-//     username: String,
-//     accessToken: String,
-//     refreshToken: String,
-//     accessTokenExpiredAt: Date (ms),
-//     refreshTokenExpiredAt: Date (ms)
-// }
+// const UserApi = require('../db/api/users');
+
 module.exports.get = function (req, res) {
     // Автоматический GET-запрос на /api/users - получение списка пользователей. Необходимо вернуть список всех пользоватлей из базы данных.
     res.json([{
