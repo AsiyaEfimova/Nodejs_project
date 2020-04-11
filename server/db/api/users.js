@@ -15,9 +15,9 @@ module.exports.add = function (data) {
         firstName: data.firstName,
         middleName: data.middleName,
         surName: data.surName,
-        username: data.username,
-        password: data.password
+        username: data.username
     });
+    User.setPassword(data.password);
     return User.save()
 }
 

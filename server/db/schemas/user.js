@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const bCrypt = require('bcryptjs');
 
 const userSchema = new Schema(
     {
@@ -36,18 +37,22 @@ const userSchema = new Schema(
         },
         refreshTokenExpiredAt: {
             type: Number
+        },
+        hash: {
+            type: String,
+            required: [true, 'Password required'],
         }
     },
     { versionKey: false }
 );
 
-// userSchema.methods.setPassword = function(password) {
-//   this.hash = bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
-// };
+userSchema.methods.setPassword = function (password) {
+    this.hash = bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
+};
 
-// userSchema.methods.validPassword = function(password) {
-//   return bCrypt.compareSync(password, this.hash);
-// };
+userSchema.methods.validPassword = function (password) {
+    return bCrypt.compareSync(password, this.hash);
+};
 
 const User = mongoose.model('user', userSchema);
 

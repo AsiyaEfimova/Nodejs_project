@@ -20,7 +20,6 @@ const UserApi = require('../db/api/users');
 
 module.exports.registration = async function (req, res) {
     // POST-запрос на /api/registration - создание нового пользователя (регистрация). Сигнатура запроса: { username, surName, firstName, middleName, password }. Необходимо вернуть объект авторизовавшегося пользователя.
-    console.log(req.body);
     const result = await UserApi.add(req.body);
     res.json(result);
 }
