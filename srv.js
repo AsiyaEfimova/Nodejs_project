@@ -1,3 +1,4 @@
+const path = require('path');
 var express = require('express');
 require('./server/db');
 
@@ -18,7 +19,12 @@ app.use(function (_, res, next) {
 app.use(express.static(__dirname + "/build"));
 
 // router
-app.use('/', require('./server/routes/index'));
+app.use('/api', require('./server/routes/index'));
+
+app.use('*', (_req, res) => {
+    const file = path.resolve(__dirname, 'build', 'index.html')
+    res.sendFile(file)
+})
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

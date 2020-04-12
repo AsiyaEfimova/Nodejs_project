@@ -19,6 +19,8 @@
 
 module.exports.get = function (req, res) {
     // GET-запрос на /api/profile - авторизация при наличии токена. Необходимо вернуть объект пользователя.
+    console.log('profile', req.body);
+
     res.json([{
         id: 1,
         text: 'text',
