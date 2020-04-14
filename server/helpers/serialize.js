@@ -6,6 +6,6 @@ module.exports.serializeUser = (user) => {
     middleName: user.middleName,
     permission: user.permission,
     surName: user.surName,
-    username: user.userName,
+    username: user.username,
   }
 }

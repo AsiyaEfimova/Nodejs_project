@@ -18,6 +18,8 @@ app.use(function (_, res, next) {
 
 app.use(express.static(__dirname + "/build"));
 
+require('./server/auth/passport');
+
 // router
 app.use('/api', require('./server/routes/index'));
 

@@ -1,31 +1,16 @@
-// Обьект авторизованного пользователя:
-// {
-//     firstName: String,
-//     id: Primary key,
-//     image: String,
-//     middleName: String,
-//     permission: {
-//         chat: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
-//         news: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
-//         settings: { C: Boolean, R: Boolean, U: Boolean, D: Boolean }
-//     }
-//     surName: String,
-//     username: String,
-//     accessToken: String,
-//     refreshToken: String,
-//     accessTokenExpiredAt: Date (ms),
-//     refreshTokenExpiredAt: Date (ms)
-// }
+const UserApi = require('../db/api/users');
+require('dotenv').config();
+const secret = process.env.SECRET;
+const tokens = require('../auth/tokens');
+const helper = require('../helpers/serialize');
 
-module.exports.get = function (req, res) {
-    // GET-запрос на /api/profile - авторизация при наличии токена. Необходимо вернуть объект пользователя.
-    console.log('profile', req.body);
-
-    res.json([{
-        id: 1,
-        text: 'text',
-        title: 'title'
-    }]);
+module.exports.get = async function (req, res) {
+    const token = req.headers['authorization'];
+    const user = await tokens.getUserByToken(token, UserApi.getById, secret);
+    console.log(helper.serializeUser(user));
+    res.json({
+        ...helper.serializeUser(user)
+    })
 }
 module.exports.patch = function (req, res) {
     // PATCH-запрос на /api/profile - обновление информации о пользователе. Сигнатура запроса:
@@ -37,6 +22,9 @@ module.exports.patch = function (req, res) {
     //     newPassword: String,
     //     avatar: File
     // }
+    const token = req.headers['authorization'];
+
+
     res.json({
         firstName: String,
         middleName: String,
