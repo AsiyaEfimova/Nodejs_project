@@ -1,31 +1,27 @@
-// const UserApi = require('../db/api/users');
+const UserApi = require('../db/api/users');
+require('dotenv').config();
+const helper = require('../helpers/serialize');
 
-module.exports.get = function (req, res) {
-    // Автоматический GET-запрос на /api/users - получение списка пользователей. Необходимо вернуть список всех пользоватлей из базы данных.
-    res.json([{
-        firstName: String,
-        id: 'Primary key',
-        image: String,
-        middleName: String,
-        permission: {
-            chat: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
-            news: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
-            settings: { C: Boolean, R: Boolean, U: Boolean, D: Boolean }
-        },
-        surName: String,
-        username: String
-    }]);
+module.exports.get = async function (req, res) {
+    const userList = await UserApi.getList();
+    const result = userList.users.map((user) => helper.serializeUser(user));
+    res.json(result);
 }
-module.exports.patch = function (req, res) {
-    // PATCH-запрос на /api/users/:id/permission - обновление существующей записи о разрешениях конкретного пользователя. Сигнатура:
-    res.json({
-        permission: {
-            chat: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
-            news: { C: Boolean, R: Boolean, U: Boolean, D: Boolean },
-            settings: { C: Boolean, R: Boolean, U: Boolean, D: Boolean }
-        }
-    });
+module.exports.patch = async function (req, res) {
+    try {
+        const user = await UserApi.updatePermission(req.params.id, req.body)
+        res.json({
+            ...helper.serializeUser(user),
+        })
+    } catch (error) {
+        next(error)
+    }
 }
-module.exports.delete = function (req, res) {
-    // DELETE-запрос на /api/users/:id - удаление пользователя.
+module.exports.delete = async function (req, res) {
+    try {
+        await UserApi.delete(req.params.id)
+        res.json({})
+    } catch (error) {
+        next(error)
+    }
 }

@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const Users = require('../schemas/user');
 
 module.exports.getList = async () => {
@@ -32,16 +31,20 @@ module.exports.add = function (data) {
 
 module.exports.update = function (data, id) {
     return Users.findByIdAndUpdate(
-        {
-            _id: id,
-        },
-        {
-            $set: data,
-        },
+        { _id: id },
+        { $set: data },
         { new: true },
     )
 }
 
-module.exports.delete = function (id) {
-    return Users.findByIdAndRemove({ _id: id })
+module.exports.delete = async (id) => {
+    return await Users.findByIdAndRemove({ _id: id })
+}
+
+module.exports.updatePermission = async (id, data) => {
+    return await Users.findByIdAndUpdate(
+        { _id: id },
+        { $set: data },
+        { new: true },
+    )
 }

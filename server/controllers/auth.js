@@ -23,7 +23,6 @@ module.exports.registration = async function (req, res) {
     }
 }
 module.exports.login = async function (req, res) {
-    console.log(req.body);
     const { username, password } = req.body;
     let user = await UserApi.getByLogin(username);
     if (user === null) {
