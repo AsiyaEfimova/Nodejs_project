@@ -43,6 +43,13 @@ const refreshTokens = async (refreshToken, models, SECRET) => {
     return {}
   }
 }
+const getUserIdFromToken = async (token, SECRET) => {
+  try {
+    return jwt.verify(token, SECRET).user.id;
+  } catch (err) {
+    return undefined;
+  }
+};
 const getUserByToken = async (token, models, SECRET) => {
   let userId = -1
   try {
@@ -57,4 +64,5 @@ module.exports = {
   createTokens,
   refreshTokens,
   getUserByToken,
+  getUserIdFromToken
 }

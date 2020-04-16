@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 var express = require('express');
 require('./server/db');
@@ -17,6 +18,11 @@ app.use(function (_, res, next) {
 });
 
 app.use(express.static(__dirname + "/build"));
+
+let upload = path.join('./build', 'upload');
+if (!fs.existsSync(upload)) {
+    fs.mkdirSync(upload);
+}
 
 require('./server/auth/passport');
 

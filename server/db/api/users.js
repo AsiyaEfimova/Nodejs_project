@@ -31,18 +31,12 @@ module.exports.add = function (data) {
 }
 
 module.exports.update = function (data, id) {
-    const User = new Users({
-        firstName: data.firstname,
-        middleName: data.patronicname,
-        surName: data.lastname,
-        username: data.username
-    })
     return Users.findByIdAndUpdate(
         {
             _id: id,
         },
         {
-            $set: User,
+            $set: data,
         },
         { new: true },
     )
