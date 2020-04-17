@@ -1,11 +1,16 @@
 const fs = require('fs');
 const path = require('path');
 var express = require('express');
+var app = express();
+const http = require('http')
+const server = http.createServer(app)
+const io = require('socket.io').listen(server)
+const SocketApi = require('./server/db/api/socket');
+
 require('./server/db');
 
-var app = express();
-// parse application/json
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 app.use(function (_, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -52,6 +57,23 @@ app.use(function (err, req, res, next) {
     });
 });
 
-app.listen(3000, function () {
+server.listen(3000, function () {
     console.log('Example app listening on port 3000!');
 });
+
+// SocketApi
+io.on('connection', (socket) => {
+    const socketId = socket.id
+    socket.on('users:connect', function (data) {
+        SocketApi.usersConnect(socket, data, socketId)
+    })
+    socket.on('message:add', function (data) {
+        SocketApi.messageAdd(socket, data);
+    })
+    socket.on('message:history', function (data) {
+        SocketApi.messageHistory(socket, data);
+    })
+    socket.on('disconnect', function (data) {
+        SocketApi.usersDisconnect(socket, socketId);
+    })
+})
