@@ -1,58 +1,40 @@
-// Обьект новости:
-// {
-//     id: Primary key,
-//     created_at: Date,
-//     text: String,
-//     title: String,
-//     user: {
-//         firstName: String,
-//         id: Key,
-//         image: String,
-//         middleName: String,
-//         surName: String,
-//         username: String
-//     }
-// }
+const NewsApi = require('../db/api/news');
+const UserApi = require('../db/api/users');
+const helper = require('../helpers/serialize');
+require('dotenv').config();
+const secret = process.env.SECRET;
+const tokens = require('../auth/tokens');
 
-module.exports.get = function (req, res) {
-    // GET-запрос на /api/news - получение списка новостей. Необходимо вернуть список всех новостей из базы данных.
-    console.log(1);
-
-    res.json([{
-        id: 1,
-        text: 'text',
-        title: 'title'
-    }]);
+module.exports.get = async function (req, res) {
+    const news = await NewsApi.getNews()
+    res.json(news)
 }
-module.exports.post = function (req, res) {
-    // POST-запрос на /api/news - создание новой новости. Сигнатура запроса: { text, title }. Необходимо вернуть обновленный список всех новостей из базы данных.
-    res.json([{
-        id: 1,
-        text: 'text',
-        title: 'title'
-    }, {
-        id: 2,
-        text: 'text2',
-        title: 'title2'
-    }]);
+module.exports.post = async function (req, res, next) {
+    try {
+        const token = req.headers['authorization']
+        const user = await UserApi.getById(await tokens.getUserIdFromToken(token, secret))
+        await NewsApi.createNews(req.body, helper.serializeUser(user))
+        const news = await NewsApi.getNews()
+        res.json(news)
+    } catch (e) {
+        next(e)
+    }
 }
-module.exports.patch = function (req, res) {
-    // PATCH-запрос на /api/news/:id - обновление существующей новости. Сигнатура запроса: { text, title }. Необходимо вернуть обновленный список всех новостей из базы данных.
-    res.json([{
-        id: 1,
-        text: 'text1',
-        title: 'title1'
-    }, {
-        id: 2,
-        text: 'text2',
-        title: 'title2'
-    }]);
+module.exports.patch = async (req, res, next) => {
+    try {
+        await NewsApi.updateNews(req.params.id, req.body)
+        const news = await NewsApi.getNews()
+        res.json(news)
+    } catch (e) {
+        next(e)
+    }
 }
-module.exports.delete = function (req, res) {
-    // DELETE-запрос на /api/news/:id - удаление существующей новости. Необходимо вернуть обновленный список всех новостей из базы данных.
-    res.json([{
-        id: 1,
-        text: 'text1',
-        title: 'title1'
-    }]);
+module.exports.delete = async (req, res, next) => {
+    try {
+        await NewsApi.deleteNews(req.params.id)
+        const news = await NewsApi.getNews()
+        res.json(news)
+    } catch (e) {
+        next(e)
+    }
 }
