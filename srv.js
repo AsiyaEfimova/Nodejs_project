@@ -57,7 +57,9 @@ app.use(function (err, req, res, next) {
     });
 });
 
-server.listen(3000, function () {
+const PORT = process.env.PORT || 3000
+
+server.listen(PORT, function () {
     console.log('Example app listening on port 3000!');
 });
 
