@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { tokensSelector, refreshTokenRequest, logout } from '../store/auth';
 import { openNotification } from '../store/notifications';
-const baseURL = 'https://asiya-efimova.herokuapp.com/api/';
+// const baseURL = 'https://asiya-efimova.herokuapp.com/api/';
+const baseURL = 'http://localhost:3000/api/';
 const instance = axios.create({ baseURL });
 
 const waitQueue = [];

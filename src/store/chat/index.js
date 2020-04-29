@@ -73,7 +73,8 @@ export default combineReducers({
 export const connectSocket = () => (dispatch, getState) => {
   const userProfile = userProfileSelector(getState())
 
-  socket = socketIO('https://asiya-efimova.herokuapp.com/')
+  socket = socketIO('http://localhost:3000/')
+  // socket = socketIO('https://asiya-efimova.herokuapp.com/')
 
   socket.emit('users:connect', {
     userId: userProfile.id,
